@@ -1,5 +1,9 @@
-create schema escola;
+-- Criação e utilização do esquema (SCHEMA) (Pode ser trocado por 'database')
+
+CREATE SCHEMA escola;
 use escola;
+
+-- Criação das tabelas dos alunos e matérias
 
 CREATE TABLE alunos (
     aluno_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -15,7 +19,7 @@ CREATE TABLE materias (
     carga_horaria INT,
     media DECIMAL(5, 2),
     aluno_id INT,
-    FOREIGN KEY (aluno_id) REFERENCES alunos(aluno_id)
+    FOREIGN KEY (aluno_id) REFERENCES alunos(aluno_id) -- Chave Estrangeira (alunos(id) -> materias(aluno_id))
 );
 
 -- Inserir 6 estudantes na tabela alunos
@@ -44,5 +48,37 @@ VALUES
     ('Cálculo I', 60, 5.2, 6),
     ('Sistemas de Potência', 60, 8.2, 6);
 
+-- Alunos e matérias em suas respectivas tabelas
 SELECT * FROM alunos;
 SELECT * FROM materias;
+
+-- Seleção utilizando parâmetro para filtragem
+
+SELECT * FROM alunos WHERE alunos.idade <= 20
+
+-- Alteração (update)
+
+UPDATE estudantes SET idade = 23 WHERE nome = ’Maria Santos
+
+-- Deleção
+
+DELETE FROM estudantes WHERE idade <= 21
+
+-- Criação de índice
+
+CREATE INDEX idx_nome ON estudantes (nome)
+
+-- Exemplo de Transação
+
+START TRANSACTION;
+
+UPDATE alunos SET idade = 21 WHERE nome = 'João Silva';
+
+INSERT INTO materias (nome, carga_horaria, media, aluno_id)
+VALUES ('Cálculo II', 60, 9.3, (SELECT aluno_id FROM alunos WHERE nome = 'João Silva'));
+
+COMMIT;
+
+-- Exemplo de agregação (GROUP BY)
+
+SELECT sexo, AVG(idade) AS avg_age FROM alunos GROUP BY sexo;
